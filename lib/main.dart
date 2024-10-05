@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'package:currency_converter/currency.dart';
 
-String fromCurrrency = '';
-String toCurrency = '';
+String fromCurrency = 'KOR'; // 변수명 오타 수정
+String toCurrency = 'WON'; // 기본값 추가
 double rate = 0.0;
 double total = 0.0;
 
 TextEditingController amountController = TextEditingController();
-List<String> Currencies = [];
+final List<String> currencies = ['KOR', 'WON']; // 변수명 소문자로 변경
 
 void main() {
   runApp(MyApp());
@@ -16,44 +16,29 @@ void main() {
 
 class MyApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Currency Converter',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomeScreen(),
-    );
-  }
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _MyAppState();
-    ;
-  }
+  _MyAppState createState() =>
+      _MyAppState(); // createState 위치 변경 및 _MyAppState 호출
 }
 
 class _MyAppState extends State<MyApp> {
-  //def variable
+  // define variable
   String? usdToInr;
 
   @override
   void initState() {
     super.initState();
-// add in initState
-    convert();
+    convert(); // 함수 호출 위치 수정
   }
 
-// call function to convert
+  // call function to convert
   void convert() async {
-    String fromCurrrency = '';
+    String fromCurrency = '';
     String toCurrency = '';
     double rate = 0.0;
     double total = 0.0;
-    TextEditingController amountContorller = TextEditingController();
-    List<String> Currencies = [];
-  } //
+    TextEditingController amountController = TextEditingController();
+    List<String> currencies = [];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,46 +46,79 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Money Convertor'),
+          title: const Text('Money Converter'),
           centerTitle: true,
         ),
         body: Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(children: [
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  DropdownButton<String>(
+                    value: fromCurrency,
+                    items: currencies.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value, // value를 value로 수정
+                        child: Text(value), // e 대신 value 사용
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        fromCurrency = newValue!; // 변경된 값 적용
+                      });
+                    },
+                  ),
+                  SizedBox(
+                    width: 50,
+                  ),
+                  DropdownButton<String>(
+                    value: fromCurrency,
+                    items: currencies.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value, // value를 value로 수정
+                        child: Text(value), // e 대신 value 사용
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        fromCurrency = newValue!; // 변경된 값 적용
+                      });
+                    },
+                  )
+                ],
+              ),
+              Row(
                 children: <Widget>[
                   Expanded(
-                      child: TextField(
-                          style: TextStyle(fontSize: 15),
-                          controller: amountController,
-                          keyboardType: TextInputType.number,
-                          // decoration : (),
-                          textInputAction: (TextInputAction.search))),
+                    child: TextField(
+                      style: TextStyle(fontSize: 15),
+                      controller: amountController,
+                      keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.search,
+                    ),
+                  ),
                   const Text(
-                    "USD = ",
+                    "USD ",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                   ),
                   const SizedBox(
                     width: 10,
                   ),
-                  Expanded(
-                    child: Text(
-                      "$usdToInr ${Currency.inr.name.toUpperCase()}",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                        color: Colors.green,
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
+              SizedBox(
+                height: 50,
+              ),
               const Text(
-                "USD = ",
+                "USD ",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
               ),
-            ])),
+            ],
+          ),
+        ),
       ),
     );
   }

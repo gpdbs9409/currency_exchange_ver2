@@ -6,7 +6,6 @@ String fromCurrency = 'KOR'; // 변수명 오타 수정
 String toCurrency = 'WON'; // 기본값 추가
 double rate = 0.0;
 double total = 0.0;
-
 TextEditingController amountController = TextEditingController();
 final List<String> currencies = ['KOR', 'WON']; // 변수명 소문자로 변경
 
@@ -74,7 +73,7 @@ class _MyAppState extends State<MyApp> {
                     width: 50,
                   ),
                   DropdownButton<String>(
-                    value: fromCurrency,
+                    value: toCurrency,
                     items: currencies.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value, // value를 value로 수정
@@ -83,7 +82,7 @@ class _MyAppState extends State<MyApp> {
                     }).toList(),
                     onChanged: (String? newValue) {
                       setState(() {
-                        fromCurrency = newValue!; // 변경된 값 적용
+                        toCurrency = newValue!; // 변경된 값 적용
                       });
                     },
                   )
